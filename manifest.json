@@ -1,0 +1,22 @@
+{
+    "name": "Rumi's Garden Adventure",
+    "short_name": "Garden Maze",
+    "description": "A magical garden maze adventure with Rumi and her friends.",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#fcfaf7",
+    "theme_color": "#2f5d50",
+    "icons": [
+        {
+            "src": "images/logo.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/logo.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}

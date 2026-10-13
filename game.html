@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play Rumi's Garden Adventure maze game.">
+    <title>Rumi's Garden Adventure | Maze Game</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+
+<body class="game-page">
+
+    <!-- Main website header -->
+    <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Rumi's Garden Adventure home">
+            <span class="brand-flower" aria-hidden="true">✿</span>
+            <span>Rumi's Garden Adventure</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="game.html" aria-current="page">Maze Game</a>
+        </nav>
+
+        <a class="button button-small" href="index.html">Back Home</a>
+    </header>
+
+    <!-- Main game content -->
+    <main class="game-main">
+
+        <!-- Game introduction -->
+        <section class="game-heading">
+            <p class="eyebrow">
+                <span class="location-dot" aria-hidden="true"></span>
+                YOUR GARDEN JOURNEY
+            </p>
+
+            <h1>Find the golden exit!</h1>
+
+            <p>Collect both friends and make your way through the garden maze.</p>
+        </section>
+
+        <div class="game-layout">
+
+            <!-- Settings, progress, and guide -->
+            <aside class="game-sidebar">
+
+                <!-- Game settings -->
+                <section class="panel settings-panel">
+                    <h2>Game settings</h2>
+                    <p class="panel-description">Choose your adventure.</p>
+
+                    <form id="maze-form">
+                        <label for="maze-size">Maze size</label>
+
+                        <select id="maze-size" name="maze-size">
+                            <option value="5">5 × 5 · Easy</option>
+                            <option value="10" selected>10 × 10 · Medium</option>
+                            <option value="15">15 × 15 · Hard</option>
+                            <option value="20">20 × 20 · Expert</option>
+                        </select>
+
+                        <label for="player-character">Choose your character</label>
+
+                        <select id="player-character" name="player-character">
+                            <option value="Rumi">Rumi</option>
+                            <option value="Mira">Mira</option>
+                            <option value="Zoey">Zoey</option>
+                        </select>
+
+                        <label class="checkbox-label" for="timer-enabled">
+                            <input type="checkbox" id="timer-enabled" name="timer-enabled" checked>
+                            <span>Enable timer</span>
+                        </label>
+
+                        <label for="time-limit">Time limit in seconds</label>
+
+                        <input type="number" id="time-limit" name="time-limit" min="10" max="600" value="120">
+
+                        <p class="form-error" id="settings-error" role="alert"></p>
+
+                        <button class="button button-full" type="submit">
+                            Start New Maze
+                        </button>
+                    </form>
+                </section>
+
+
+
+                <!-- Maze guide -->
+                <section class="panel guide-panel">
+                    <h2>Garden guide</h2>
+
+                    <p>
+                        <span class="guide-symbol path-symbol" aria-hidden="true"></span>
+                        Pink path
+                    </p>
+
+                    <p>
+                        <span class="guide-symbol wall-symbol" aria-hidden="true"></span>
+                        Green hedge
+                    </p>
+
+                    <p>
+                        <span class="guide-symbol exit-symbol" aria-hidden="true">★</span>
+                        Golden exit
+                    </p>
+
+                    <p class="panel-description">
+                        Use the arrow keys or click a neighbouring path tile to move.
+                        You can also use the direction buttons below the maze.
+                    </p>
+                </section>
+
+            </aside>
+
+            <!-- Maze and movement controls -->
+            <section class="panel maze-panel">
+                <div class="maze-panel-heading">
+                    <div>
+                        <h2>Your garden maze</h2>
+                        <p>Every step leaves a footprint.</p>
+                    </div>
+
+                    <span class="garden-badge" aria-hidden="true">✿</span>
+                </div>
+                <!-- Player progress -->
+                <section class="status-panel">
+                    <h2>Your progress</h2>
+
+                    <div class="stat-card">
+                        <span>Current level</span>
+                        <strong id="level-score">1</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span>Time remaining</span>
+                        <strong id="game-timer">02:00</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span>Friends collected</span>
+                        <strong id="friends-count">0 / 2</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <span>Steps taken</span>
+                        <strong id="steps-count">0</strong>
+                    </div>
+
+                    <p id="selected-character-name" class="selected-character">
+                        Playing as Rumi
+                    </p>
+
+                    <p id="game-message" class="game-message" role="status" aria-live="polite">
+                        Choose your settings and start!
+                    </p>
+                </section>
+
+
+
+                <div id="maze-board" class="maze-board" aria-label="Garden maze">
+                    <p class="maze-placeholder">Your garden maze will appear here.</p>
+                </div>
+
+                <!-- Accessible movement buttons -->
+                <div class="movement-controls">
+                    <p>Move your character</p>
+
+                    <div class="control-row">
+                        <button type="button" data-move="up" aria-label="Move up">↑</button>
+                    </div>
+
+                    <div class="control-row">
+                        <button type="button" data-move="left" aria-label="Move left">←</button>
+                        <button type="button" data-move="down" aria-label="Move down">↓</button>
+                        <button type="button" data-move="right" aria-label="Move right">→</button>
+                    </div>
+                </div>
+
+                <p class="maze-tip">
+                    Remember: collect both friends before reaching the star!
+                </p>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Winning screen -->
+    <section id="win-screen" class="result-screen" hidden aria-labelledby="win-title">
+        <div class="result-card win-card">
+            <p class="result-decoration" aria-hidden="true">✦ ✿ ✦</p>
+            <h2 id="win-title">You Won!</h2>
+            <p class="result-subtitle">All your friends are together!</p>
+
+            <div class="winning-characters">
+                <img src="images/Rumi.png" alt="Rumi">
+                <img src="images/Mira.png" alt="Mira">
+                <img src="images/Zoey.png" alt="Zoey">
+            </div>
+
+            <p id="win-message">You collected both friends and reached the exit!</p>
+            <p id="win-score" class="result-score">Level completed: 1</p>
+
+            <button type="button" id="next-level" class="button button-full">
+                Next Level →
+            </button>
+
+            <div class="result-actions">
+                <button type="button" id="win-play-again" class="button button-light">
+                    Play Again
+                </button>
+
+                <a class="text-link" href="index.html">Back to Home</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Time-up screen -->
+    <section id="lose-screen" class="result-screen" hidden aria-labelledby="lose-title">
+        <div class="result-card lose-card">
+            <p class="result-decoration" aria-hidden="true">💔</p>
+            <h2 id="lose-title">Time's Up!</h2>
+
+            <img id="lose-character" class="lose-character" src="images/Rumi.png" alt="Your selected character">
+
+            <p id="lose-message">The timer has ended. Try the garden maze again!</p>
+
+            <button type="button" id="lose-play-again" class="button button-full">
+                Try Again
+            </button>
+
+            <a class="text-link" href="index.html">Back to Home</a>
+        </div>
+    </section>
+
+    <!-- Website footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <a class="brand footer-brand" href="index.html">
+                <span class="brand-flower" aria-hidden="true">✿</span>
+                <span>Rumi's Garden Adventure</span>
+            </a>
+
+            <p>Explore, collect, and find your way.</p>
+
+            <p class="footer-location">
+                Calgary, Alberta · <span id="current-time">Local time loading...</span>
+            </p>
+        </div>
+
+        <p class="copyright">
+            © <span id="current-year"></span> Rumi's Garden Adventure
+        </p>
+    </footer>
+
+</body>
+
+</html>
