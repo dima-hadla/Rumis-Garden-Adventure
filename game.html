@@ -55,14 +55,39 @@
                     <p class="panel-description">Choose your adventure.</p>
 
                     <form id="maze-form">
-                        <label for="maze-size">Maze size</label>
+                        <label for="level-selector-toggle">Maze Level & Size</label>
 
-                        <select id="maze-size" name="maze-size">
-                            <option value="5">5 × 5 · Easy</option>
-                            <option value="10" selected>10 × 10 · Medium</option>
-                            <option value="15">15 × 15 · Hard</option>
-                            <option value="20">20 × 20 · Expert</option>
+
+                        <select id="level-selector-toggle" class="level-selector-toggle" name="level-selector">
+                            <optgroup label="Easy">
+                                <option value="1">Level 1 · 5 × 5 · Easy</option>
+                                <option value="2">Level 2 · 6 × 6 · Easy</option>
+                                <option value="3">Level 3 · 7 × 7 · Easy</option>
+                                <option value="4">Level 4 · 8 × 8 · Easy</option>
+                            </optgroup>
+                            <optgroup label="Medium">
+                                <option value="5">Level 5 · 9 × 9 · Medium</option>
+                                <option value="6">Level 6 · 10 × 10 · Medium</option>
+                                <option value="7">Level 7 · 11 × 11 · Medium</option>
+                                <option value="8">Level 8 · 12 × 12 · Medium</option>
+                            </optgroup>
+                            <optgroup label="Hard">
+                                <option value="9">Level 9 · 13 × 13 · Hard</option>
+                                <option value="10">Level 10 · 14 × 14 · Hard</option>
+                                <option value="11">Level 11 · 15 × 15 · Hard</option>
+                                <option value="12">Level 12 · 16 × 16 · Hard</option>
+                            </optgroup>
+                            <optgroup label="Expert">
+                                <option value="13">Level 13 · 17 × 17 · Expert</option>
+                                <option value="14">Level 14 · 18 × 18 · Expert</option>
+                                <option value="15">Level 15 · 19 × 19 · Expert</option>
+                                <option value="16">Level 16 · 20 × 20 · Expert</option>
+                            </optgroup>
                         </select>
+
+
+                        <input type="hidden" id="maze-size" name="maze-size" value="5">
+
 
                         <label for="player-character">Choose your character</label>
 

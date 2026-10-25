@@ -46,7 +46,27 @@ const board = document.getElementById("maze-board");
 
 // Get the input used to select the maze size.
 const sizeInput = document.getElementById("maze-size");
+// Get the level selector.
+const levelSelector = document.getElementById("level-selector-toggle");
 
+// Handle level selection.
+if (levelSelector) {
+    levelSelector.addEventListener("change", () => {
+        const selectedLevel = Number(levelSelector.value);
+
+        if (
+            !Number.isInteger(selectedLevel) ||
+            selectedLevel < 1 ||
+            selectedLevel > 16
+        ) {
+            return;
+        }
+
+        level = selectedLevel;
+        localStorage.setItem("rumiCurrentLevel", String(level));
+        startNewGame(true);
+    });
+}
 // Get the input used to select the player character.
 const characterInput = document.getElementById("player-character");
 
@@ -140,8 +160,8 @@ let visitedCharacter = new Map();
 // Count the number of steps taken by the player.
 let steps = 0;
 
-// Set the starting level to 1.
-let level = 1;
+// Restore the last saved level, or start at level 1.
+let level = Number(localStorage.getItem("rumiCurrentLevel")) || 1;
 
 // Set the initial remaining time to 120 seconds.
 let secondsLeft = 120;
@@ -741,6 +761,22 @@ function hideResults() {
         loseScreen.hidden = true;
     }
 }
+// Update the selected level label and progress display.
+function updateLevelDisplay() {
+    const mazeSizeForLevel = level + 4;
+
+    if (levelDisplay) {
+        levelDisplay.textContent = String(level);
+    }
+
+    if (levelSelector) {
+        levelSelector.value = String(level);
+    }
+
+    if (sizeInput) {
+        sizeInput.value = String(mazeSizeForLevel);
+    }
+}
 
 // Start a new game, optionally keeping the current level.
 function startNewGame(keepLevel = false) {
@@ -755,11 +791,11 @@ function startNewGame(keepLevel = false) {
     const timerEnabled = Boolean(timerInput?.checked);
 
     // Check whether the selected maze size is allowed.
-    if (![5, 10, 15, 20].includes(requestedSize)) {
+    if (!Number.isInteger(requestedSize) || requestedSize < 5 || requestedSize > 20) {
         // Display an error if the maze size is invalid.
         if (settingsError) {
             settingsError.textContent =
-                "Choose a maze size of 5, 10, 15, or 20.";
+                "Choose a maze size between 5 and 20.";
         }
 
         return;
@@ -791,18 +827,28 @@ function startNewGame(keepLevel = false) {
     // Stop the previous countdown.
     stopTimer();
 
-    // Apply the selected maze size.
-    mazeSize = requestedSize;
-
     // Use the selected character if it exists; otherwise, use Rumi.
     selectedCharacter = characters[characterInput?.value]
         ? characterInput.value
         : "Rumi";
 
-    // Reset the level to 1 unless the current level should be kept.
+    // Set the current level from the selected maze size when starting a new game.
     if (!keepLevel) {
-        level = 1;
+        level = Number(sizeInput?.value || 5) - 4;
     }
+
+    // Apply the maze size based on the current level.
+    mazeSize = level + 4;
+
+    // Save the current level.
+    localStorage.setItem("rumiCurrentLevel", String(level));
+
+    // Keep the hidden size input synchronized with the current level.
+    if (sizeInput) {
+        sizeInput.value = String(mazeSize);
+    }
+    // Refresh the displayed level information.
+    updateLevelDisplay();
 
     // Generate a new maze using the selected size.
     maze = generateMaze(mazeSize);
@@ -1164,17 +1210,23 @@ if (timerInput) {
 // Listen for clicks on the Next Level button.
 if (nextLevelButton) {
     nextLevelButton.addEventListener("click", () => {
-        // Increase the current level by one.
-        level += 1;
-
-        // Increase the maze size by five, up to a maximum of twenty.
-        if (sizeInput && Number(sizeInput.value) < 20) {
-            sizeInput.value = String(
-                Math.min(20, Number(sizeInput.value) + 5)
-            );
+        // Stop at the final level.
+        if (level >= 16) {
+            return;
         }
 
-        // Start a new maze while keeping the current level.
+        // Advance to the next level.
+        level += 1;
+
+        // Save the new level.
+        localStorage.setItem("rumiCurrentLevel", String(level));
+
+        // Update the selected maze size.
+        if (sizeInput) {
+            sizeInput.value = String(level + 4);
+        }
+
+        // Start the next level.
         startNewGame(true);
     });
 }
@@ -1198,9 +1250,9 @@ if (loseAgainButton) {
 // Update the time and year displayed in the footer.
 updateFooter();
 
-// Start a new game if the maze board exists.
+// Start a new game and restore the saved level if available.
 if (board) {
-    startNewGame(false);
+    startNewGame(true);
 }
 
 if ("serviceWorker" in navigator) {
