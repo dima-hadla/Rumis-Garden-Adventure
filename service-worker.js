@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "rumis-garden-adventure-v1";
+const CACHE_NAME = "rumis-garden-adventure-v2";
 
 const FILES_TO_CACHE = [
     "./",
